@@ -57,8 +57,43 @@ function login() {
 	$conn->close();
 }
 
-function registrasi($nama, $email, $password) {
-	
+function registrasi() {
+	//inisialisasi variabel yang akan ditampung dan diolah dengan query
+	$nama = $_POST['nama'];
+	$telp = $_POST['telp'];
+	$email = $_POST['email'];
+	$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+	global $conn;
+	global $response;
+	//inisialiasi query cek apakah email belum terdaftar
+	$query = "SELECT id FROM user WHERE email = '$email'";
+	//pemanggilan fungsi mysqli_query untuk mengirimkan perintah sesuai parameter yang diisi
+	$result = $conn->query($query);
+	//cek apakah email belum terdaftar
+	if ($result->num_rows === 0) {
+		// /$conn->close();
+		//inisialisasi query insert data
+		$query = "INSERT INTO user (nama, telp, email, password) VALUES ('$nama', '$telp', '$email', '$password')";
+		$result = $conn->query($query);
+		//pengkondisian saat fungsi mysqli_query berhasil atau gagal dieksekusi
+		if($result) {
+			$response = array(
+				'status' => TRUE,
+				'msg' => 'Pendaftaran berhasil!'
+			);
+		} else {
+			$response = array(
+				'status' => FALSE,
+				'msg' => 'Pendaftaran gagal!'
+			);
+		}
+	} else {
+		$response = array(
+			'status' => FALSE,
+			'msg' => 'Pendaftaran gagal, email sudah terdaftar.'
+		);
+	}
+	$conn->close();
 }
 
 function update() {
