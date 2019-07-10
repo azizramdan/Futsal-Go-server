@@ -73,7 +73,11 @@ function registrasi() {
 	if ($result->num_rows === 0) {
 		// /$conn->close();
 		//inisialisasi query insert data
-		$query = "INSERT INTO user (nama, telp, email, password) VALUES ('$nama', '$telp', '$email', '$password')";
+		$query = "INSERT INTO user 
+					(nama, telp, email, password) 
+					VALUES 
+					('$nama', '$telp', '$email', '$password')";
+
 		$result = $conn->query($query);
 		//pengkondisian saat fungsi mysqli_query berhasil atau gagal dieksekusi
 		if($result) {
@@ -97,5 +101,40 @@ function registrasi() {
 }
 
 function update() {
-
+	$id = $_POST['id'];
+	$nama = $_POST['nama'];
+	$telp = $_POST['telp'];
+	$email = $_POST['email'];
+	global $conn;
+	global $response;
+	//cek apakah password akan diganti
+	if(isset($_POST['password'])) {
+		$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+		$query = "UPDATE user SET 
+					nama = '$nama', 
+					telp = '$telp',
+					email = '$email',
+					password = '$password'
+				WHERE
+					id = '$id'";
+	} else {
+		$query = "UPDATE user SET 
+					nama = '$nama', 
+					telp = '$telp',
+					email = '$email'
+				WHERE
+					id = '$id'";
+	}
+	$result = $conn->query($query);
+	if($result) {
+		$response = array(
+			'status' => TRUE,
+			'msg' => 'Update akun berhasil!'
+		);
+	} else {
+		$response = array(
+			'status' => FALSE,
+			'msg' => 'Update akun gagal!'
+		);
+	}
 }
