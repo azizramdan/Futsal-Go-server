@@ -5,7 +5,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['method'])) {
 	//inisialisasi variabel method
 	$method = $_POST['method'];
 	//inisialisasi variabel untuk menampung data
-	$response;
+	$response = "";
 
 	if($method == 'login') {
 		login();
