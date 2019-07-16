@@ -15,7 +15,6 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['method'])) {
 		update();
 	}
 
-	header('Content-type: application/json'); //set tipe response jadi json
 	echo json_encode($response); //merubah respone menjadi JsonObject lalu dikirim
 }
 function login() {
