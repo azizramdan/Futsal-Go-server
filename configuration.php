@@ -1,4 +1,5 @@
 <?php
+header('Content-type: application/json');
 //error_reporting(0);
 $host = "localhost"; // Nama hostnya
 $username = "root"; // Username
@@ -10,7 +11,6 @@ if ($conn->connect_error) {
         'status' => FALSE,
         'msg' => 'Connection failed!'
     );
-    header('Content-type: application/json');
 	echo json_encode($response);
     die();
 }
