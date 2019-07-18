@@ -1,37 +1,49 @@
 <?php
-if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['method'])) {
-	//include file connect.php untuk menyambungkan file create.php dengan database
+if($_SERVER['REQUEST_METHOD']=='POST') {
 	include_once "configuration.php";
-	//inisialisasi variabel method
-	$method = $_POST['method'];
+	$json = json_decode(file_get_contents("php://input"));
 	//inisialisasi variabel untuk menampung data
 	$response = "";
-
-	if($method == 'store') {
-		store();
-	} else if($method == 'showTime') {
-		showTime();
+	//inisialisasi variabel method
+	if(isset($_POST['method'])) {
+		$method = $_POST['method'];
+		if($method == 'showTime') {
+			showTime();
+		}
+	} else if(isset($json->method)) {
+		$method = $json->method;
+		if($method === 'store') {
+			store();
+		}
 	}
 
 	echo json_encode($response);
 }
 
 function store() {
-	$id_user = $_POST['id_user'];
-	$id_lapangan = $_POST['id_lapangan'];
-	$waktu_pilih = $_POST['waktu_pilih'];
-	$metode_bayar = $_POST['metode_bayar'];
-	$status = $_POST['status'];
-
 	global $conn;
 	global $response;
+	global $json;
 
-	$query = "INSERT INTO pesanan 
+	$id_user = $json->id_user;
+	$id_lapangan = $json->id_lapangan;
+	$waktu_pilih_tanggal = $json->waktu_pilih_tanggal;
+	$waktu_pilih_jam = $json->waktu_pilih_jam;
+	$metode_bayar = $json->metode_bayar;
+
+	$waktu_pilih = array();
+	$query = "";
+
+	for($i = 0; $i < count($waktu_pilih_jam); $i++) {
+		$waktu_pilih[] = $waktu_pilih_tanggal . " " . $waktu_pilih_jam[$i];
+
+		$query .= "INSERT INTO pesanan 
 					(id_user, id_lapangan, waktu_pilih, metode_bayar, status) 
-					VALUES 
-					('$id_user', '$id_lapangan', '$waktu_pilih', '$metode_bayar', '$status')";
+				VALUES 
+					('$id_user', '$id_lapangan', '$waktu_pilih[$i]', '$metode_bayar', 'belum');";
+	}
 	
-	$result = $conn->query($query);
+	$result = $conn->multi_query($query);
 	if($result) {
 		$response = array(
 			'status' => TRUE,
@@ -50,9 +62,22 @@ function showTime() {
 	global $conn;
 	global $response;
 	
-	$waktu_pilih = date('Y-m-d', strtotime($_POST['waktu_pilih']));
+	$waktu_pilih = $_POST['waktu_pilih'];
+	$id_lapangan = $_POST['id_lapangan'];
+	$waktu_pilih_now = "";
+	if($waktu_pilih == date("Y-m-d")) {
+		$waktu_pilih_now = date("Y-m-d H:i:s");
+	}
     
-    $query = "SELECT waktu_pilih FROM pesanan WHERE waktu_pilih LIKE '$waktu_pilih%'";
+    $query = "SELECT waktu_pilih 
+				FROM pesanan 
+				WHERE 
+					waktu_pilih LIKE '$waktu_pilih%' 
+				AND
+					waktu_pilih > '$waktu_pilih_now' 
+				AND 
+					id_lapangan = '$id_lapangan'";
+
     $result = $conn->query($query);
 	$data = array();
 	if($result->num_rows > 0) {
@@ -62,7 +87,7 @@ function showTime() {
 		}
 		$response = array(
 			'status' => TRUE,
-			'msg' => '',
+			'msg' => $waktu_pilih . date("Y-m-d"),
 			'data' => $data
 		);
 	} else {
