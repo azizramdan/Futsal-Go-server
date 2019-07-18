@@ -1,5 +1,6 @@
 <?php
 header('Content-type: application/json');
+date_default_timezone_set("Asia/Jakarta");
 //error_reporting(0);
 $host = "localhost"; // Nama hostnya
 $username = "root"; // Username
