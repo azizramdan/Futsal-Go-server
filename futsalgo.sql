@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 16, 2019 at 05:35 PM
+-- Generation Time: Jul 19, 2019 at 04:13 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -33,6 +33,16 @@ CREATE TABLE `fasilitas` (
   `nama` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `fasilitas`
+--
+
+INSERT INTO `fasilitas` (`id`, `nama`) VALUES
+(1, 'toilet'),
+(2, 'kafe'),
+(3, 'kamar ganti'),
+(4, 'tribun');
+
 -- --------------------------------------------------------
 
 --
@@ -44,6 +54,15 @@ CREATE TABLE `fasilitas_lapangan` (
   `id_fasilitas` int(4) NOT NULL,
   `id_lapangan` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `fasilitas_lapangan`
+--
+
+INSERT INTO `fasilitas_lapangan` (`id`, `id_fasilitas`, `id_lapangan`) VALUES
+(1, 2, 1),
+(2, 2, 2),
+(3, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -161,13 +180,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `fasilitas`
 --
 ALTER TABLE `fasilitas`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `fasilitas_lapangan`
 --
 ALTER TABLE `fasilitas_lapangan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `lapangan`
@@ -179,7 +198,7 @@ ALTER TABLE `lapangan`
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `user`
