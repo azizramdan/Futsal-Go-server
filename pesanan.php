@@ -64,9 +64,17 @@ function showTime() {
 	
 	$waktu_pilih = $_POST['waktu_pilih'];
 	$id_lapangan = $_POST['id_lapangan'];
-	$waktu_pilih_now = "";
+	$waktu_pilih_now = NULL;
+	$data = array();
 	if($waktu_pilih == date("Y-m-d")) {
 		$waktu_pilih_now = date("Y-m-d H:i:s");
+
+		for($i = date('H', strtotime('07:00:00')); $i <= date('H', strtotime($waktu_pilih_now)); $i++) {
+			array_push($data, array(
+				'waktu_pilih' => date('H', strtotime($i. ':00:00'))
+				)
+			);
+		}
 	}
     
     $query = "SELECT waktu_pilih 
@@ -79,7 +87,7 @@ function showTime() {
 					id_lapangan = '$id_lapangan'";
 
     $result = $conn->query($query);
-	$data = array();
+	
 	if($result->num_rows > 0) {
 		while($row = mysqli_fetch_array($result)){
 			array_push($data, array(
@@ -87,7 +95,13 @@ function showTime() {
 		}
 		$response = array(
 			'status' => TRUE,
-			'msg' => $waktu_pilih . date("Y-m-d"),
+			'msg' => "",
+			'data' => $data
+		);
+	} else if($waktu_pilih_now != NULL) {
+		$response = array(
+			'status' => TRUE,
+			'msg' => "",
 			'data' => $data
 		);
 	} else {
