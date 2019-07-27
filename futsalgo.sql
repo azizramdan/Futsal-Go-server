@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 19, 2019 at 04:13 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.1
+-- Generation Time: Jul 27, 2019 at 04:30 PM
+-- Server version: 10.3.16-MariaDB
+-- PHP Version: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,33 @@ SET time_zone = "+00:00";
 --
 -- Database: `futsalgo`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(4) NOT NULL,
+  `telp` varchar(13) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `alamat` text COLLATE utf8_unicode_ci NOT NULL,
+  `latitude` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `longitude` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `bank` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `nama_rekening` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `no_rekening` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id`, `telp`, `email`, `password`, `alamat`, `latitude`, `longitude`, `bank`, `nama_rekening`, `no_rekening`) VALUES
+(1, '081321655', 'fauzan@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'ger ertg erg er654g er gre g885', '-6.524842', '107.448613', 'BNI', 'Fauzan', '7898756654'),
+(2, '082232654641', 'aziz@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'fgt re thre6546 the ht', '-6.483249', '107.479635', 'BCA', 'Aziz', '798654654');
 
 -- --------------------------------------------------------
 
@@ -55,15 +82,6 @@ CREATE TABLE `fasilitas_lapangan` (
   `id_lapangan` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `fasilitas_lapangan`
---
-
-INSERT INTO `fasilitas_lapangan` (`id`, `id_fasilitas`, `id_lapangan`) VALUES
-(1, 2, 1),
-(2, 2, 2),
-(3, 3, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -72,26 +90,20 @@ INSERT INTO `fasilitas_lapangan` (`id`, `id_fasilitas`, `id_lapangan`) VALUES
 
 CREATE TABLE `lapangan` (
   `id` int(4) NOT NULL,
+  `id_admin` int(4) NOT NULL,
   `nama` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `harga` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `telp` varchar(13) COLLATE utf8_unicode_ci NOT NULL,
-  `alamat` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `longitude` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `latitude` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `foto` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(60) COLLATE utf8_unicode_ci NOT NULL
+  `foto` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `lapangan`
 --
 
-INSERT INTO `lapangan` (`id`, `nama`, `harga`, `telp`, `alamat`, `longitude`, `latitude`, `foto`, `email`, `password`) VALUES
-(1, 'Puzzle', '100000', '6546547987', 'Jl. Veteran No.408, Ciseureuh, Kec. Purwakarta, Kabupaten Purwakarta, Jawa Barat 41118.', '107.448613', '-6.524842', 'https://apollo-singapore.akamaized.net/v1/files/jwypr8vhhgon1-ID/image;s=966x691;olx-st/_7_.jpg', 'puzzle@email.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi'),
-(2, 'Puzzle 2', '150000', '6546547987', 'Jalan Raya Bungursari No.213, Bungursari, Kabupaten Purwakarta, Jawa Barat 41181.', '107.479635', '-6.483249', 'https://rumus.web.id/wp-content/uploads/2018/08/lapangan-futsal.jpg', 'puzzle2@email.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi'),
-(3, 'Puzzle 3', '50000', '6546547987', 'Jalan Pramuka No. 81, Jatiluhur, Bunder, Kec. Purwakarta, Kabupaten Purwakarta, Jawa Barat 41152.', '107.429088', '-6.553523', 'https://apollo-singapore.akamaized.net/v1/files/kz70wxs55xzw2-ID/image;s=966x691;olx-st/_1_.jpg', 'puzzle3@email.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi'),
-(5, 'Puzzle 4', '120000', '6546547987', 'Jl. Raya Darangdan Km. 22, Darangdan, Purwakarta, Kabupaten Purwakarta, Jawa Barat 41163.', '107.430972', '-6.686473', 'https://s.kaskus.id/r480x480/images/fjb/2016/02/29/take_over_lapangan_futsal_batam_684052_1456738328.jpg', 'puzzle@email.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi');
+INSERT INTO `lapangan` (`id`, `id_admin`, `nama`, `harga`, `foto`) VALUES
+(6, 1, 'Puzzle 1', '100000', 'https://rumus.web.id/wp-content/uploads/2018/08/lapangan-futsal.jpg'),
+(7, 1, 'Puzzle 2', '150000', 'https://s.kaskus.id/r480x480/images/fjb/2016/02/29/take_over_lapangan_futsal_batam_684052_1456738328.jpg'),
+(8, 2, 'YPKP', '200000', 'https://www.jaringfutsalpengaman.com/wp-content/uploads/2018/07/37.jpg');
 
 -- --------------------------------------------------------
 
@@ -138,6 +150,12 @@ INSERT INTO `user` (`id`, `nama`, `email`, `telp`, `password`) VALUES
 --
 
 --
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `fasilitas`
 --
 ALTER TABLE `fasilitas`
@@ -156,7 +174,8 @@ ALTER TABLE `fasilitas_lapangan`
 -- Indexes for table `lapangan`
 --
 ALTER TABLE `lapangan`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_admin` (`id_admin`);
 
 --
 -- Indexes for table `pesanan`
@@ -177,6 +196,12 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `fasilitas`
 --
 ALTER TABLE `fasilitas`
@@ -192,13 +217,13 @@ ALTER TABLE `fasilitas_lapangan`
 -- AUTO_INCREMENT for table `lapangan`
 --
 ALTER TABLE `lapangan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -216,6 +241,12 @@ ALTER TABLE `user`
 ALTER TABLE `fasilitas_lapangan`
   ADD CONSTRAINT `fasilitas_lapangan_ibfk_1` FOREIGN KEY (`id_fasilitas`) REFERENCES `fasilitas` (`id`),
   ADD CONSTRAINT `fasilitas_lapangan_ibfk_2` FOREIGN KEY (`id_lapangan`) REFERENCES `lapangan` (`id`);
+
+--
+-- Constraints for table `lapangan`
+--
+ALTER TABLE `lapangan`
+  ADD CONSTRAINT `lapangan_ibfk_1` FOREIGN KEY (`id_admin`) REFERENCES `admin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pesanan`
