@@ -1,5 +1,5 @@
 <?php
-if($_SERVER['REQUEST_METHOD']=='POST') {
+if($_SERVER['REQUEST_METHOD'] == 'POST' OR $_SERVER['REQUEST_METHOD'] == 'GET') {
 	include_once "configuration.php";
 	$json = json_decode(file_get_contents("php://input"));
 	//inisialisasi variabel untuk menampung data
@@ -14,6 +14,11 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
 		$method = $json->method;
 		if($method === 'store') {
 			store();
+		}
+	} else if(isset($_GET['method'])) {
+		$method = $_GET['method'];
+		if($method == 'getClient') {
+			getClient();
 		}
 	}
 
@@ -99,6 +104,53 @@ function showTime() {
 			'data' => $data
 		);
 	} else if($waktu_pilih_now != NULL) {
+		$response = array(
+			'status' => TRUE,
+			'msg' => "",
+			'data' => $data
+		);
+	} else {
+		$response = array(
+			'status' => FALSE,
+			'msg' => 'Tidak ada data!'
+		);
+	}
+	$conn->close();
+}
+
+function getClient() {
+	global $conn;
+	global $response;
+
+	$id_user = $_GET['id_user'];
+	$data = array();
+	$query = "SELECT
+    			pesanan.id, pesanan.waktu_pilih, pesanan.metode_bayar, pesanan.status,
+    			lapangan.nama, lapangan.harga, 
+    			admin.alamat
+			FROM
+    			pesanan, lapangan, admin
+			WHERE
+				id_user = '$id_user'
+				AND status = 'belum'
+				AND pesanan.id_lapangan = lapangan.id
+				AND lapangan.id_admin = admin.id";
+			
+
+	$result = $conn->query($query);
+
+	if($result->num_rows > 0) {
+		while($row = mysqli_fetch_array($result)){
+			array_push($data, array(
+				'id' => $row[0],
+				'waktu_pilih' => $row[1],
+				'metode_bayar' => $row[2],
+				'status' => $row[3],
+				'nama_lapangan' => $row[4],
+				'harga' => $row[5],
+				'alamat' => $row[6]
+			));
+		}
 		$response = array(
 			'status' => TRUE,
 			'msg' => "",
