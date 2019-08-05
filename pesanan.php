@@ -123,29 +123,48 @@ function getClient() {
 	global $response;
 
 	$id_user = $_GET['id_user'];
+	$waktu_pilih = date("Y-m-d H:i:s");
 	$data = array();
 	$query = "SELECT
-    			pesanan.id, pesanan.waktu_pilih, pesanan.metode_bayar, pesanan.status,
-    			lapangan.nama, lapangan.harga, 
-    			admin.alamat
+				pesanan.id, pesanan.waktu_pilih, pesanan.metode_bayar, pesanan.status,
+				lapangan.nama, lapangan.harga, 
+				admin.alamat
 			FROM
-    			pesanan, lapangan, admin
+				pesanan, lapangan, admin
 			WHERE
-				id_user = '$id_user'
-				AND status = 'belum'
+				pesanan.id_user = '$id_user'
+				AND pesanan.waktu_pilih >= '$waktu_pilih'
 				AND pesanan.id_lapangan = lapangan.id
-				AND lapangan.id_admin = admin.id";
+				AND lapangan.id_admin = admin.id
+			ORDER BY
+				CASE pesanan.status
+					WHEN 'belum' THEN 1
+					WHEN 'selesai' THEN 2
+					ELSE 3
+				END";
 			
-
 	$result = $conn->query($query);
 
 	if($result->num_rows > 0) {
 		while($row = mysqli_fetch_array($result)){
+			$waktu_pilih_tanggal = strftime('%A, %e %B %Y', strtotime($row[1]));
+			$waktu_pilih_jam = date('H:i', strtotime($row[1])) . ' - ' . date('H:i', strtotime($row[1] . '+60 minutes'));
+			switch($row[3]) {
+				case 'belum':
+					$status = 'Belum bayar';
+					break;
+				case 'selesai':
+				$status = 'Selesai';
+					break;
+				default:
+				$status = 'Dibatalkan';
+			}
 			array_push($data, array(
 				'id' => $row[0],
-				'waktu_pilih' => $row[1],
+				'waktu_pilih_tanggal' => $waktu_pilih_tanggal,
+				'waktu_pilih_jam' => $waktu_pilih_jam,
 				'metode_bayar' => $row[2],
-				'status' => $row[3],
+				'status' => $status,
 				'nama_lapangan' => $row[4],
 				'harga' => $row[5],
 				'alamat' => $row[6]
@@ -153,7 +172,7 @@ function getClient() {
 		}
 		$response = array(
 			'status' => TRUE,
-			'msg' => "",
+			'msg' => '',
 			'data' => $data
 		);
 	} else {
