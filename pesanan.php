@@ -108,6 +108,8 @@ function showTime() {
 					waktu_pilih > '$waktu_sekarang'
 				AND 
                     id_lapangan = '$id_lapangan'
+				AND 
+                    status = 'belum'
                 ORDER BY
                     waktu_pilih ASC";
 
