@@ -11,6 +11,8 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['method'])) {
 		login();
 	} else if($method == 'registrasi') {
 		registrasi();
+	} else if($method == 'edit') {
+		edit();
 	} else if($method == 'update') {
 		update();
 	}
@@ -97,6 +99,38 @@ function registrasi() {
 		);
 	}
 	$conn->close();
+}
+
+function edit() {
+	global $conn;
+	global $response;
+	$id = $_POST['id'];
+	$data = array();
+
+	$query = "SELECT * FROM user WHERE id = '$id'";
+
+	$result = $conn->query($query);
+	if($result->num_rows > 0) {
+		while($row = mysqli_fetch_assoc($result)) {
+			array_push($data, array(
+				'id' => $row['id'],
+				'nama' => $row['nama'],
+				'email' => $row['email'],
+				'telp' => $row['telp'],
+			));
+		}
+		$response = array(
+			'status' => TRUE,
+			'msg' => '',
+			'data' => $data
+		);
+	} else {
+		$response = array(
+			'status' => FALSE,
+			'msg' => '',
+			'data' => 'Tidak ada data!'
+		);
+	}
 }
 
 function update() {
