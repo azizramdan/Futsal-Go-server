@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2019 at 04:30 PM
--- Server version: 10.3.16-MariaDB
--- PHP Version: 7.3.6
+-- Generation Time: Aug 06, 2019 at 03:05 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -38,16 +38,18 @@ CREATE TABLE `admin` (
   `longitude` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `bank` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `nama_rekening` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `no_rekening` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+  `no_rekening` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `jam_buka` time NOT NULL,
+  `jam_tutup` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `telp`, `email`, `password`, `alamat`, `latitude`, `longitude`, `bank`, `nama_rekening`, `no_rekening`) VALUES
-(1, '081321655', 'fauzan@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'ger ertg erg er654g er gre g885', '-6.524842', '107.448613', 'BNI', 'Fauzan', '7898756654'),
-(2, '082232654641', 'aziz@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'fgt re thre6546 the ht', '-6.483249', '107.479635', 'BCA', 'Aziz', '798654654');
+INSERT INTO `admin` (`id`, `telp`, `email`, `password`, `alamat`, `latitude`, `longitude`, `bank`, `nama_rekening`, `no_rekening`, `jam_buka`, `jam_tutup`) VALUES
+(1, '081321655', 'fauzan@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'ger ertg erg er654g er gre g885', '-6.524842', '107.448613', 'BNI', 'Fauzan', '7898756654', '07:00:00', '22:00:00'),
+(2, '082232654641', 'aziz@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'fgt re thre6546 the ht', '-6.483249', '107.479635', 'BCA', 'Aziz', '798654654', '09:00:00', '21:00:00');
 
 -- --------------------------------------------------------
 
@@ -117,8 +119,22 @@ CREATE TABLE `pesanan` (
   `id_lapangan` int(4) NOT NULL,
   `waktu_pilih` datetime NOT NULL,
   `metode_bayar` enum('cod','transfer') COLLATE utf8_unicode_ci NOT NULL,
-  `status` enum('bayar','belum') COLLATE utf8_unicode_ci NOT NULL
+  `status` enum('belum','selesai','batal') COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `pesanan`
+--
+
+INSERT INTO `pesanan` (`id`, `id_user`, `id_lapangan`, `waktu_pilih`, `metode_bayar`, `status`) VALUES
+(17, 2, 6, '2019-08-06 16:00:00', 'transfer', 'batal'),
+(18, 2, 6, '2019-08-06 18:00:00', 'transfer', 'batal'),
+(19, 2, 6, '2019-08-06 17:00:00', 'transfer', 'batal'),
+(20, 2, 6, '2019-08-06 19:00:00', 'transfer', 'batal'),
+(21, 2, 6, '2019-08-10 07:00:00', 'transfer', 'batal'),
+(22, 2, 6, '2019-08-10 08:00:00', 'transfer', 'batal'),
+(23, 2, 6, '2019-08-10 10:00:00', 'transfer', 'batal'),
+(24, 2, 6, '2019-08-10 09:00:00', 'transfer', 'batal');
 
 -- --------------------------------------------------------
 
@@ -139,11 +155,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `telp`, `password`) VALUES
-(1, 'fauzanw', 'fauzan@email.com', '1111111111111', '$2y$10$1VDV6zw7k1NXnOyd.7josO/PFe2Vh3AmQ4AApEr1iKiySH1w03C0e'),
-(2, 'aziz', 'aziz@email.com', '465654654', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi'),
-(3, 'aziz ramdan', 'azizr@email.com', '089600000', '$2y$10$umw3a2ljwD5O0IgSqau0.ehc1cM5tClrvKvi9r2HVAnDDyyc/q8Nu'),
-(4, 'lapangan 2', 'puzzle@email.com', '7687687686876', '$2y$10$/iqMWt2.NechyY6uV7MGF.Qpu4KOPgfyCawiHrlcUg3hPHLVjEGV.'),
-(5, 'kjhjkdfhs', 'azizwr@email.com', '', '$2y$10$CaqIfWp4hNZVum6NRC9u9e/Cra83b72y7P9Bjh25ZM9baTvP1Fxzi');
+(1, 'fauzanw', 'fauzan@gmail.com', '1111111111111', '$2y$10$1VDV6zw7k1NXnOyd.7josO/PFe2Vh3AmQ4AApEr1iKiySH1w03C0e'),
+(2, 'aziz', 'aziz@gmail.com', '465654654', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi'),
+(3, 'aziz ramdan', 'azizr@gmail.com', '089600000', '$2y$10$umw3a2ljwD5O0IgSqau0.ehc1cM5tClrvKvi9r2HVAnDDyyc/q8Nu'),
+(4, 'lapangan 2', 'puzzle@gmail.com', '7687687686876', '$2y$10$/iqMWt2.NechyY6uV7MGF.Qpu4KOPgfyCawiHrlcUg3hPHLVjEGV.'),
+(5, 'kjhjkdfhs', 'azizwr@gmail.com', '', '$2y$10$CaqIfWp4hNZVum6NRC9u9e/Cra83b72y7P9Bjh25ZM9baTvP1Fxzi');
 
 --
 -- Indexes for dumped tables
@@ -211,7 +227,7 @@ ALTER TABLE `fasilitas`
 -- AUTO_INCREMENT for table `fasilitas_lapangan`
 --
 ALTER TABLE `fasilitas_lapangan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `lapangan`
@@ -223,7 +239,7 @@ ALTER TABLE `lapangan`
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `user`
