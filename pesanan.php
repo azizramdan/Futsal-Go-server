@@ -19,6 +19,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' OR $_SERVER['REQUEST_METHOD'] == 'GET') 
 		$method = $_GET['method'];
 		if($method == 'getClient') {
 			getClient();
+		} else if($method = 'batal') {
+			batal();
 		}
 	}
 
@@ -161,7 +163,7 @@ function getClient() {
 	$query = "SELECT
 				pesanan.id, pesanan.waktu_pilih, pesanan.metode_bayar, pesanan.status,
 				lapangan.nama, lapangan.harga, 
-				admin.alamat
+				admin.alamat, admin.bank, admin.nama_rekening, admin.no_rekening
 			FROM
 				pesanan, lapangan, admin
 			WHERE
@@ -169,11 +171,11 @@ function getClient() {
 				AND pesanan.waktu_pilih >= '$waktu_pilih'
 				AND pesanan.id_lapangan = lapangan.id
 				AND lapangan.id_admin = admin.id
+				AND pesanan.status != 'selesai'
 			ORDER BY
 				CASE pesanan.status
 					WHEN 'belum' THEN 1
-					WHEN 'selesai' THEN 2
-					ELSE 3
+					ELSE 2
 				END";
 			
 	$result = $conn->query($query);
@@ -186,21 +188,21 @@ function getClient() {
 				case 'belum':
 					$status = 'Belum bayar';
 					break;
-				case 'selesai':
-				$status = 'Selesai';
-					break;
 				default:
 				$status = 'Dibatalkan';
 			}
 			array_push($data, array(
-				'id' => $row[0],
+				'id' => $row['id'],
 				'waktu_pilih_tanggal' => $waktu_pilih_tanggal,
 				'waktu_pilih_jam' => $waktu_pilih_jam,
-				'metode_bayar' => $row[2],
+				'metode_bayar' => $row['metode_bayar'],
 				'status' => $status,
-				'nama_lapangan' => $row[4],
-				'harga' => $row[5],
-				'alamat' => $row[6]
+				'nama_lapangan' => $row['nama'],
+				'harga' => $row['harga'],
+				'alamat' => $row['alamat'],
+				'bank' => $row['bank'],
+				'nama_rekening' => $row['nama_rekening'],
+				'no_rekening' => $row['no_rekening']
 			));
 		}
 		$response = array(
@@ -212,6 +214,33 @@ function getClient() {
 		$response = array(
 			'status' => FALSE,
 			'msg' => 'Tidak ada data!'
+		);
+	}
+	$conn->close();
+}
+
+function batal() {
+	global $conn;
+	global $response;
+
+	$id = $_GET['id'];
+	$query = "UPDATE pesanan 
+				SET 
+					status = 'batal'
+				WHERE 
+					id = '$id'";
+
+	$result = $conn->query($query);
+	// die(var_dump($result));
+	if($result) {
+		$response = array(
+			'status' => TRUE,
+			'msg' => 'Pesanan berhasil dibatalkan!'
+		);
+	} else {
+		$response = array(
+			'status' => FALSE,
+			'msg' => 'Pesanan gagal dibatalkan!'
 		);
 	}
 	$conn->close();
