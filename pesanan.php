@@ -70,13 +70,31 @@ function showTime() {
 	$waktu_pilih = $_POST['waktu_pilih'];
 	$id_lapangan = $_POST['id_lapangan'];
 	$waktu_pilih_now = NULL;
-	$data = array();
-	if($waktu_pilih == date("Y-m-d")) {
-		$waktu_pilih_now = date("Y-m-d H:i:s");
+    $data = array();
+    $waktu_pesanan = array();
+    
+    $query = "SELECT
+					jam_buka,
+					jam_tutup 
+				FROM 
+					admin,
+					lapangan
+				WHERE 
+					admin.id = lapangan.id_admin
+					AND lapangan.id = '$id_lapangan'";
 
-		for($i = date('H', strtotime('07:00:00')); $i <= date('H', strtotime($waktu_pilih_now)); $i++) {
-			array_push($data, array(
-				'waktu_pilih' => date('H', strtotime($i. ':00:00'))
+	$result = $conn->query($query);
+	$row = mysqli_fetch_assoc($result);
+	$jam_buka = date('H', strtotime($row['jam_buka']));
+	$jam_tutup = date('H', strtotime($row['jam_tutup']));
+
+	$waktu_sekarang = NULL;
+
+	if($waktu_pilih == date("Y-m-d")) {
+		$waktu_sekarang = date("Y-m-d H:i:s");
+		for($i = $jam_buka; $i <= date('H', strtotime($waktu_sekarang)); $i++) {
+			array_push($waktu_pesanan, array(
+				'waktu_pesanan' => date('H', strtotime($i. ':00:00'))
 				)
 			);
 		}
@@ -85,36 +103,49 @@ function showTime() {
     $query = "SELECT waktu_pilih 
 				FROM pesanan 
 				WHERE 
-					waktu_pilih LIKE '$waktu_pilih%' 
+					waktu_pilih LIKE '$waktu_pilih%'
 				AND
-					waktu_pilih > '$waktu_pilih_now' 
+					waktu_pilih > '$waktu_sekarang'
 				AND 
-					id_lapangan = '$id_lapangan'";
+                    id_lapangan = '$id_lapangan'
+                ORDER BY
+                    waktu_pilih ASC";
 
-    $result = $conn->query($query);
-	
-	if($result->num_rows > 0) {
-		while($row = mysqli_fetch_array($result)){
-			array_push($data, array(
-				'waktu_pilih' => date('H', strtotime($row[0]))));
+	$result = $conn->query($query);
+
+	while($row = mysqli_fetch_assoc($result)){
+		array_push($waktu_pesanan, array(
+			'waktu_pesanan' => date('H', strtotime($row['waktu_pilih']))));
+	}
+
+	$j = 1;
+	$waktu_pesanan_size = count($waktu_pesanan);
+	for($i = $jam_buka; $i < $jam_tutup; $i++) {
+		if($waktu_pesanan_size > 0) {
+			if($i == $waktu_pesanan[$j-1]['waktu_pesanan']) {
+				$kosong = FALSE;
+				if($j != $waktu_pesanan_size) {
+					$j++;
+				}
+			} else {
+				$kosong = TRUE;
+			}
+		} else {
+			$kosong = TRUE;
 		}
-		$response = array(
-			'status' => TRUE,
-			'msg' => "",
-			'data' => $data
-		);
-	} else if($waktu_pilih_now != NULL) {
-		$response = array(
-			'status' => TRUE,
-			'msg' => "",
-			'data' => $data
-		);
-	} else {
-		$response = array(
-			'status' => FALSE,
-			'msg' => 'Tidak ada data!'
+
+		array_push($data, array(
+			'waktu_pilih' => date('H:i:s', strtotime($i. ':00:00')),
+			'waktu_pilih_text' => date('H:i', strtotime($i. ':00:00')) . ' - ' . date('H:i', strtotime($i. ':00:00 +60 minutes')),
+			'kosong' => $kosong
+			)
 		);
 	}
+	$response = array(
+		'status' => TRUE,
+		'msg' => "",
+		'data' => $data
+	);
 	$conn->close();
 }
 
