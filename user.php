@@ -138,11 +138,13 @@ function update() {
 	$nama = $_POST['nama'];
 	$telp = $_POST['telp'];
 	$email = $_POST['email'];
+	$password = $_POST['password'];
 	global $conn;
 	global $response;
 	//cek apakah password akan diganti
-	if(isset($_POST['password'])) {
-		$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+	if($password != '') {
+		
+		$password = password_hash($password, PASSWORD_BCRYPT);
 		$query = "UPDATE user SET 
 					nama = '$nama', 
 					telp = '$telp',
