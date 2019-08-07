@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 06, 2019 at 03:05 PM
+-- Generation Time: Aug 07, 2019 at 02:38 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -84,6 +84,18 @@ CREATE TABLE `fasilitas_lapangan` (
   `id_lapangan` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `fasilitas_lapangan`
+--
+
+INSERT INTO `fasilitas_lapangan` (`id`, `id_fasilitas`, `id_lapangan`) VALUES
+(1, 2, 6),
+(2, 3, 6),
+(3, 4, 7),
+(4, 1, 8),
+(5, 2, 8),
+(6, 3, 8);
+
 -- --------------------------------------------------------
 
 --
@@ -104,7 +116,7 @@ CREATE TABLE `lapangan` (
 
 INSERT INTO `lapangan` (`id`, `id_admin`, `nama`, `harga`, `foto`) VALUES
 (6, 1, 'Puzzle 1', '100000', 'https://rumus.web.id/wp-content/uploads/2018/08/lapangan-futsal.jpg'),
-(7, 1, 'Puzzle 2', '150000', 'https://s.kaskus.id/r480x480/images/fjb/2016/02/29/take_over_lapangan_futsal_batam_684052_1456738328.jpg'),
+(7, 1, 'Puzzle 2', '75000', 'https://s.kaskus.id/r480x480/images/fjb/2016/02/29/take_over_lapangan_futsal_batam_684052_1456738328.jpg'),
 (8, 2, 'YPKP', '200000', 'https://www.jaringfutsalpengaman.com/wp-content/uploads/2018/07/37.jpg');
 
 -- --------------------------------------------------------
@@ -119,7 +131,7 @@ CREATE TABLE `pesanan` (
   `id_lapangan` int(4) NOT NULL,
   `waktu_pilih` datetime NOT NULL,
   `metode_bayar` enum('cod','transfer') COLLATE utf8_unicode_ci NOT NULL,
-  `status` enum('belum','selesai','batal') COLLATE utf8_unicode_ci NOT NULL
+  `status` enum('belum','sudah','batal') COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -127,14 +139,8 @@ CREATE TABLE `pesanan` (
 --
 
 INSERT INTO `pesanan` (`id`, `id_user`, `id_lapangan`, `waktu_pilih`, `metode_bayar`, `status`) VALUES
-(17, 2, 6, '2019-08-06 16:00:00', 'transfer', 'batal'),
-(18, 2, 6, '2019-08-06 18:00:00', 'transfer', 'batal'),
-(19, 2, 6, '2019-08-06 17:00:00', 'transfer', 'batal'),
-(20, 2, 6, '2019-08-06 19:00:00', 'transfer', 'batal'),
-(21, 2, 6, '2019-08-10 07:00:00', 'transfer', 'batal'),
-(22, 2, 6, '2019-08-10 08:00:00', 'transfer', 'batal'),
-(23, 2, 6, '2019-08-10 10:00:00', 'transfer', 'batal'),
-(24, 2, 6, '2019-08-10 09:00:00', 'transfer', 'batal');
+(25, 7, 6, '2019-08-07 19:00:00', 'cod', 'belum'),
+(26, 8, 8, '2019-08-07 20:00:00', 'transfer', 'sudah');
 
 -- --------------------------------------------------------
 
@@ -144,8 +150,8 @@ INSERT INTO `pesanan` (`id`, `id_user`, `id_lapangan`, `waktu_pilih`, `metode_ba
 
 CREATE TABLE `user` (
   `id` int(4) NOT NULL,
-  `nama` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `nama` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `telp` varchar(13) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(60) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -157,9 +163,10 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `nama`, `email`, `telp`, `password`) VALUES
 (1, 'fauzanw', 'fauzan@gmail.com', '1111111111111', '$2y$10$1VDV6zw7k1NXnOyd.7josO/PFe2Vh3AmQ4AApEr1iKiySH1w03C0e'),
 (2, 'aziz', 'aziz@gmail.com', '465654654', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi'),
-(3, 'aziz ramdan', 'azizr@gmail.com', '089600000', '$2y$10$umw3a2ljwD5O0IgSqau0.ehc1cM5tClrvKvi9r2HVAnDDyyc/q8Nu'),
-(4, 'lapangan 2', 'puzzle@gmail.com', '7687687686876', '$2y$10$/iqMWt2.NechyY6uV7MGF.Qpu4KOPgfyCawiHrlcUg3hPHLVjEGV.'),
-(5, 'kjhjkdfhs', 'azizwr@gmail.com', '', '$2y$10$CaqIfWp4hNZVum6NRC9u9e/Cra83b72y7P9Bjh25ZM9baTvP1Fxzi');
+(7, 'Aziz Ramdan Kurniawan jr', 'azizramdan44@gmail.com', '089601566951', '$2y$10$1eWIuX4eqY/AsNIzkAC1WOsRIFMe17XNbGjpteoKV3L6H12KipRmO'),
+(8, 'aziz', 'azizramdan@gmail.com', '964848', '$2y$10$Ye/lyp2ny/TVeSsqosPXqenJKfJnWalmIDjMAVWW34hrIlA2pYN1O'),
+(9, 'Aziz', 'azizr@gmail.com', '081', '$2y$10$hQk0zD3U6BbX/O63FGtiy.ogaxiwXRdbufkoBkZgBuNvf8/QOuZTa'),
+(10, 'Gshshs', 'ysyhs@sd.com', '9795', '$2y$10$K//jERmZmpRw9H09ChzYUeEixX2PCr4sTVHb0fzUPXxfnh1TNNHZC');
 
 --
 -- Indexes for dumped tables
@@ -227,7 +234,7 @@ ALTER TABLE `fasilitas`
 -- AUTO_INCREMENT for table `fasilitas_lapangan`
 --
 ALTER TABLE `fasilitas_lapangan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `lapangan`
@@ -239,13 +246,13 @@ ALTER TABLE `lapangan`
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
