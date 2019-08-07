@@ -163,7 +163,7 @@ function getClient() {
 	$query = "SELECT
 				pesanan.id, pesanan.waktu_pilih, pesanan.metode_bayar, pesanan.status,
 				lapangan.nama, lapangan.harga, 
-				admin.alamat, admin.bank, admin.nama_rekening, admin.no_rekening
+				admin.alamat, admin.bank, admin.nama_rekening, admin.no_rekening, admin.telp, admin.latitude, admin.longitude
 			FROM
 				pesanan, lapangan, admin
 			WHERE
@@ -205,7 +205,10 @@ function getClient() {
 				'alamat' => $row['alamat'],
 				'bank' => $row['bank'],
 				'nama_rekening' => $row['nama_rekening'],
-				'no_rekening' => $row['no_rekening']
+				'no_rekening' => $row['no_rekening'],
+				'telp' => $row['telp'],
+				'latitude' => $row['latitude'],
+				'longitude' => $row['longitude']
 			));
 		}
 		$response = array(
