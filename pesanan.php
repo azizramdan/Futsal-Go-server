@@ -171,11 +171,11 @@ function getClient() {
 				AND pesanan.waktu_pilih >= '$waktu_pilih'
 				AND pesanan.id_lapangan = lapangan.id
 				AND lapangan.id_admin = admin.id
-				AND pesanan.status != 'selesai'
 			ORDER BY
 				CASE pesanan.status
 					WHEN 'belum' THEN 1
-					ELSE 2
+					WHEN 'sudah' THEN 2
+					ELSE 3
 				END";
 			
 	$result = $conn->query($query);
@@ -187,6 +187,9 @@ function getClient() {
 			switch($row[3]) {
 				case 'belum':
 					$status = 'Belum bayar';
+					break;
+				case 'sudah':
+					$status = 'Sudah bayar';
 					break;
 				default:
 				$status = 'Dibatalkan';
