@@ -1,7 +1,7 @@
 <?php
 $response = "";
 if($_SERVER['REQUEST_METHOD']=='GET') {
-    include_once "configuration.php";
+    include_once "..\configuration.php";
     
     index();
 

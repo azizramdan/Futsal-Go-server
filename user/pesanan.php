@@ -1,6 +1,6 @@
 <?php
 if($_SERVER['REQUEST_METHOD'] == 'POST' OR $_SERVER['REQUEST_METHOD'] == 'GET') {
-	include_once "configuration.php";
+	include_once "..\configuration.php";
 	$json = json_decode(file_get_contents("php://input"));
 	//inisialisasi variabel untuk menampung data
 	$response = "";

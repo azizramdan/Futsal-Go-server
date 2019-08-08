@@ -1,7 +1,7 @@
 <?php
 if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['method'])) {
 	//include file connect.php untuk menyambungkan file create.php dengan database
-	include_once "configuration.php";
+	include_once "..\configuration.php";
 	//inisialisasi variabel method
 	$method = $_POST['method'];
 	//inisialisasi variabel untuk menampung data

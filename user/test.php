@@ -30,7 +30,7 @@ header('Content-type: application/json');
 //         )
 //     );
 // }
-    include_once "configuration.php";
+    include_once "..\configuration.php";
     global $conn;
 	global $response;
 	
