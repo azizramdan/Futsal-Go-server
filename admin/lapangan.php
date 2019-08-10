@@ -20,8 +20,12 @@ function get() {
         switch ($_GET['method']) {
             case 'index':
                 index();
-                break;
-            
+				break;
+				
+			case 'delete':
+                delete();
+				break;
+				
             default:
                 # code...
                 break;
@@ -52,7 +56,7 @@ function index() {
     $response;
     $query = "SELECT *
             FROM lapangan
-            WHERE id_admin = '$id_admin'";
+            WHERE id_admin = '$id_admin' AND deleted_at IS NULL";
 
     $result = $conn->query($query);
     if($result->num_rows > 0) {
@@ -130,6 +134,31 @@ function store() {
 		$response = array(
 			'status' => FALSE,
 			'msg' => 'Tambah lapangan gagal!'
+		);
+	}
+	$conn->close();
+	echo json_encode($response);
+}
+
+function delete() {
+	global $conn;
+	$id = $_GET['id'];
+    
+    $query = "UPDATE lapangan SET 
+					deleted_at = NOW()
+				WHERE
+                    id = '$id'";
+                    
+	$result = $conn->query($query);
+	if($result) {
+		$response = array(
+			'status' => TRUE,
+			'msg' => 'Hapus lapangan berhasil!'
+		);
+	} else {
+		$response = array(
+			'status' => FALSE,
+			'msg' => 'Hapus lapangan gagal!'
 		);
 	}
 	$conn->close();
