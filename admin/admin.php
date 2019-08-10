@@ -1,35 +1,58 @@
 <?php
-if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['method'])) {
-	//include file connect.php untuk menyambungkan file create.php dengan database
-	include_once "..\configuration.php";
-	//inisialisasi variabel method
-	$method = $_POST['method'];
-	//inisialisasi variabel untuk menampung data
-	$response = "";
+include_once "..\configuration.php";
 
-	if($method == 'login') {
-		login();
-	} else if($method == 'registrasi') {
-		registrasi();
-	} else if($method == 'edit') {
-		edit();
-	} else if($method == 'update') {
-		update();
-	}
+switch ($_SERVER['REQUEST_METHOD']) {
+    case 'GET':
+        get();
+        break;
 
-	echo json_encode($response); //merubah respone menjadi JsonObject lalu dikirim
+    case 'POST':
+        post();
+        break;
+    
+    default:
+        # code...
+        break;
 }
+function get() {
+    if(isset($_GET['method'])) {
+        switch ($_GET['method']) {
+            case 'index':
+                index();
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+}
+function post() {
+    if(isset($_POST['method'])) {
+        switch ($_POST['method']) {
+            case 'login':
+				login();
+				break;
+			
+			case 'update':
+				update();
+				break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+}
+
 function login() {
-	//inisialisasi variabel yang akan ditampung dan diolah dengan query
+	global $conn;
 	$email = $_POST['email'];
 	$password = $_POST['password'];
-	global $conn;
-	global $response;
-	//inisialiasi query cek akun
+
 	$query = "SELECT * FROM admin WHERE email = '$email'";
-	//pemanggilan fungsi mysqli_query untuk mengirimkan perintah sesuai parameter yang diisi
+
 	$result = $conn->query($query);
-	//pengkondisian saat fungsi mysqli_query berhasil atau gagal dieksekusi
 	if ($result->num_rows === 1) {
 		$result = $result->fetch_assoc();
 		if (password_verify($password, $result['password'])) {
@@ -60,107 +83,40 @@ function login() {
 		);
 	}
 	$conn->close();
-}
-
-function registrasi() {
-	//inisialisasi variabel yang akan ditampung dan diolah dengan query
-	$nama = $_POST['nama'];
-	$telp = $_POST['telp'];
-	$email = $_POST['email'];
-	$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-	global $conn;
-	global $response;
-	//inisialiasi query cek apakah email belum terdaftar
-	$query = "SELECT id FROM user WHERE email = '$email'";
-	//pemanggilan fungsi mysqli_query untuk mengirimkan perintah sesuai parameter yang diisi
-	$result = $conn->query($query);
-	//cek apakah email belum terdaftar
-	if ($result->num_rows === 0) {
-		// /$conn->close();
-		//inisialisasi query insert data
-		$query = "INSERT INTO user 
-					(nama, telp, email, password) 
-					VALUES 
-					('$nama', '$telp', '$email', '$password')";
-
-		$result = $conn->query($query);
-		//pengkondisian saat fungsi mysqli_query berhasil atau gagal dieksekusi
-		if($result) {
-			$response = array(
-				'status' => TRUE,
-				'msg' => 'Pendaftaran berhasil!'
-			);
-		} else {
-			$response = array(
-				'status' => FALSE,
-				'msg' => 'Pendaftaran gagal!'
-			);
-		}
-	} else {
-		$response = array(
-			'status' => FALSE,
-			'msg' => 'Pendaftaran gagal, email sudah terdaftar.'
-		);
-	}
-	$conn->close();
-}
-
-function edit() {
-	global $conn;
-	global $response;
-	$id = $_POST['id'];
-	$data = array();
-
-	$query = "SELECT * FROM user WHERE id = '$id'";
-
-	$result = $conn->query($query);
-	if($result->num_rows > 0) {
-		while($row = mysqli_fetch_assoc($result)) {
-			array_push($data, array(
-				'id' => $row['id'],
-				'nama' => $row['nama'],
-				'email' => $row['email'],
-				'telp' => $row['telp'],
-			));
-		}
-		$response = array(
-			'status' => TRUE,
-			'msg' => '',
-			'data' => $data
-		);
-	} else {
-		$response = array(
-			'status' => FALSE,
-			'msg' => '',
-			'data' => 'Tidak ada data!'
-		);
-	}
+	echo json_encode($response);
 }
 
 function update() {
-	$id = $_POST['id'];
-	$nama = $_POST['nama'];
-	$telp = $_POST['telp'];
-	$email = $_POST['email'];
-	$password = $_POST['password'];
 	global $conn;
-	global $response;
-	//cek apakah password akan diganti
+	$id = $_POST['id'];
+	$telp = $_POST['telp'];
+	$bank = $_POST['bank'];
+	$nama_rekening = $_POST['nama_rekening'];
+	$no_rekening = $_POST['no_rekening'];
+	$jam_buka = $_POST['jam_buka'];
+	$jam_tutup = $_POST['jam_tutup'];
+	$password = $_POST['password'];
+
 	if($password != '') {
-		
 		$password = password_hash($password, PASSWORD_BCRYPT);
-		$query = "UPDATE user SET 
-					nama = '$nama', 
+		$query = "UPDATE admin SET 
 					telp = '$telp',
-					email = '$email',
+					bank = '$bank',
+					nama_rekening = '$nama_rekening',
+					no_rekening = '$no_rekening',
+					jam_buka = '$jam_buka',
+					jam_tutup = '$jam_tutup',
 					password = '$password'
 				WHERE
 					id = '$id'";
 	} else {
-		$query = "UPDATE user SET 
-					nama = '$nama', 
+		$query = "UPDATE admin SET 
 					telp = '$telp',
-					email = '$email'
+					bank = '$bank',
+					nama_rekening = '$nama_rekening',
+					no_rekening = '$no_rekening',
+					jam_buka = '$jam_buka',
+					jam_tutup = '$jam_tutup'
 				WHERE
 					id = '$id'";
 	}
@@ -176,4 +132,6 @@ function update() {
 			'msg' => 'Update akun gagal!'
 		);
 	}
+	$conn->close();
+	echo json_encode($response);
 }
