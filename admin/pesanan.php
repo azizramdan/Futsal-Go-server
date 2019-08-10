@@ -7,7 +7,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case 'POST':
-        # code...
+        post();
         break;
     
     default:
@@ -28,6 +28,19 @@ function get() {
         }
     }
 }
+function post() {
+    if(isset($_POST['method'])) {
+        switch ($_POST['method']) {
+            case 'konfirmasi':
+                konfirmasi();
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+}
 function index() {
     global $conn;
     $waktu_pilih = date("Y-m-d H:i:s");
@@ -40,7 +53,8 @@ function index() {
                 pesanan.metode_bayar,
                 pesanan.status,
                 lapangan.nama AS nama_lapangan,
-                user.nama AS nama_pemesan
+                user.nama AS nama_pemesan,
+                user.telp
             FROM
                 pesanan,
                 lapangan,
@@ -74,7 +88,8 @@ function index() {
 				'metode_bayar' => $row['metode_bayar'],
 				'status' => $status,
 				'nama_lapangan' => $row['nama_lapangan'],
-				'nama_pemesan' => $row['nama_pemesan']
+                'nama_pemesan' => $row['nama_pemesan'],
+                'telp' => $row['telp']
 			));
 		}
 		$response = array(
@@ -86,6 +101,34 @@ function index() {
 		$response = array(
 			'status' => FALSE,
 			'msg' => 'Tidak ada data!'
+		);
+	}
+    $conn->close();
+    echo json_encode($response);
+}
+
+function konfirmasi() {
+	global $conn;
+    $id = $_POST['id'];
+    $status = $_POST['status'];
+
+	$query = "UPDATE pesanan 
+				SET 
+					status = '$status'
+				WHERE 
+					id = '$id'";
+
+	$result = $conn->query($query);
+	// die(var_dump($result));
+	if($result) {
+		$response = array(
+			'status' => TRUE,
+			'msg' => 'Status pesanan berhasil diubah!'
+		);
+	} else {
+		$response = array(
+			'status' => FALSE,
+			'msg' => 'Status pesanan berhasil diubah!'
 		);
 	}
     $conn->close();
