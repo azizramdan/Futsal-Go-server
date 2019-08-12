@@ -127,8 +127,8 @@ function index() {
 
 function getTime() {
 	global $conn;
-	$waktu_pilih = $_POST['waktu_pilih'];
-	$id_lapangan = $_POST['id_lapangan'];
+	$waktu_pilih = $_GET['waktu_pilih'];
+	$id_lapangan = $_GET['id_lapangan'];
 	$waktu_pilih_now = NULL;
     $data = array();
     $waktu_pesanan = array();
