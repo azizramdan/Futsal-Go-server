@@ -1,74 +1,132 @@
 <?php
-if($_SERVER['REQUEST_METHOD'] == 'POST' OR $_SERVER['REQUEST_METHOD'] == 'GET') {
-	include_once "..\configuration.php";
-	$json = json_decode(file_get_contents("php://input"));
-	//inisialisasi variabel untuk menampung data
-	$response = "";
-	//inisialisasi variabel method
-	if(isset($_POST['method'])) {
-		$method = $_POST['method'];
-		if($method == 'showTime') {
-			showTime();
-		}
-	} else if(isset($json->method)) {
-		$method = $json->method;
-		if($method === 'store') {
-			store();
-		}
-	} else if(isset($_GET['method'])) {
-		$method = $_GET['method'];
-		if($method == 'getClient') {
-			getClient();
-		} else if($method = 'batal') {
-			batal();
-		}
-	}
+include_once "..\configuration.php";
 
-	echo json_encode($response);
+switch ($_SERVER['REQUEST_METHOD']) {
+    case 'GET':
+        get();
+        break;
+
+    case 'POST':
+        post();
+        break;
+    
+    default:
+        # code...
+        break;
+}
+function get() {
+    if(isset($_GET['method'])) {
+        switch ($_GET['method']) {
+            case 'index':
+				index();
+				break;
+
+			case 'getTime':
+				getTime();
+                break;
+			
+			case 'batal':
+				batal();
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+}
+function post() {
+	$json = json_decode(file_get_contents("php://input"));
+    if(isset($json->method)) {
+        switch ($json->method) {
+            case 'store':
+				store();
+				break;
+
+            default:
+                # code...
+                break;
+        }
+    }
 }
 
-function store() {
-	global $conn;
-	global $response;
-	global $json;
+function index() {
+    include_once "..\kadaluarsa.php";
 
-	$id_user = $json->id_user;
-	$id_lapangan = $json->id_lapangan;
-	$waktu_pilih_tanggal = $json->waktu_pilih_tanggal;
-	$waktu_pilih_jam = $json->waktu_pilih_jam;
-	$metode_bayar = $json->metode_bayar;
+    global $conn;
+    $id_user = $_GET['id_user'];
+	$data = array();
+	$query = "SELECT
+				pesanan.id, pesanan.waktu_pilih, pesanan.metode_bayar, pesanan.status,
+				lapangan.nama, lapangan.harga, 
+				admin.alamat, admin.bank, admin.nama_rekening, admin.no_rekening, admin.telp, admin.latitude, admin.longitude
+			FROM
+				pesanan, lapangan, admin
+			WHERE
+				pesanan.id_user = '$id_user'
+				AND pesanan.id_lapangan = lapangan.id
+				AND lapangan.id_admin = admin.id
+			ORDER BY
+				CASE pesanan.status
+					WHEN 'belum' THEN 1
+					WHEN 'sudah' THEN 2
+                    WHEN 'kadaluarsa' THEN 3
+					ELSE 4
+				END";
+			
+	$result = $conn->query($query);
 
-	$waktu_pilih = array();
-	$query = "";
-
-	for($i = 0; $i < count($waktu_pilih_jam); $i++) {
-		$waktu_pilih[] = $waktu_pilih_tanggal . " " . $waktu_pilih_jam[$i];
-
-		$query .= "INSERT INTO pesanan 
-					(id_user, id_lapangan, waktu_pilih, metode_bayar, status) 
-				VALUES 
-					('$id_user', '$id_lapangan', '$waktu_pilih[$i]', '$metode_bayar', 'belum');";
-	}
-	
-	$result = $conn->multi_query($query);
-	if($result) {
+	if($result->num_rows > 0) {
+		while($row = mysqli_fetch_array($result)){
+			$waktu_pilih_tanggal = strftime('%A, %e %B %Y', strtotime($row[1]));
+			$waktu_pilih_jam = date('H:i', strtotime($row[1])) . ' - ' . date('H:i', strtotime($row[1] . '+60 minutes'));
+			switch($row[3]) {
+				case 'belum':
+					$status = 'Belum bayar';
+					break;
+				case 'sudah':
+					$status = 'Sudah bayar';
+                    break;
+                case 'kadaluarsa':
+					$status = 'Kadaluarsa';
+					break;
+				default:
+				$status = 'Dibatalkan';
+			}
+			array_push($data, array(
+				'id' => $row['id'],
+				'waktu_pilih_tanggal' => $waktu_pilih_tanggal,
+				'waktu_pilih_jam' => $waktu_pilih_jam,
+				'metode_bayar' => $row['metode_bayar'],
+				'status' => $status,
+				'nama_lapangan' => $row['nama'],
+				'harga' => $row['harga'],
+				'alamat' => $row['alamat'],
+				'bank' => $row['bank'],
+				'nama_rekening' => $row['nama_rekening'],
+				'no_rekening' => $row['no_rekening'],
+				'telp' => $row['telp'],
+				'latitude' => $row['latitude'],
+				'longitude' => $row['longitude']
+			));
+		}
 		$response = array(
 			'status' => TRUE,
-			'msg' => 'Pemesanan berhasil!'
+			'msg' => '',
+			'data' => $data
 		);
 	} else {
 		$response = array(
 			'status' => FALSE,
-			'msg' => 'Pemesanan gagal!'
+			'msg' => 'Tidak ada data!'
 		);
 	}
 	$conn->close();
+	echo json_encode($response);
 }
 
-function showTime() {
+function getTime() {
 	global $conn;
-	global $response;
-	
 	$waktu_pilih = $_POST['waktu_pilih'];
 	$id_lapangan = $_POST['id_lapangan'];
 	$waktu_pilih_now = NULL;
@@ -151,84 +209,11 @@ function showTime() {
 		'data' => $data
 	);
 	$conn->close();
-}
-
-function getClient() {
-	global $conn;
-	global $response;
-
-	$id_user = $_GET['id_user'];
-	$waktu_pilih = date("Y-m-d H:i:s");
-	$data = array();
-	$query = "SELECT
-				pesanan.id, pesanan.waktu_pilih, pesanan.metode_bayar, pesanan.status,
-				lapangan.nama, lapangan.harga, 
-				admin.alamat, admin.bank, admin.nama_rekening, admin.no_rekening, admin.telp, admin.latitude, admin.longitude
-			FROM
-				pesanan, lapangan, admin
-			WHERE
-				pesanan.id_user = '$id_user'
-				AND pesanan.waktu_pilih >= '$waktu_pilih'
-				AND pesanan.id_lapangan = lapangan.id
-				AND lapangan.id_admin = admin.id
-			ORDER BY
-				CASE pesanan.status
-					WHEN 'belum' THEN 1
-					WHEN 'sudah' THEN 2
-					ELSE 3
-				END";
-			
-	$result = $conn->query($query);
-
-	if($result->num_rows > 0) {
-		while($row = mysqli_fetch_array($result)){
-			$waktu_pilih_tanggal = strftime('%A, %e %B %Y', strtotime($row[1]));
-			$waktu_pilih_jam = date('H:i', strtotime($row[1])) . ' - ' . date('H:i', strtotime($row[1] . '+60 minutes'));
-			switch($row[3]) {
-				case 'belum':
-					$status = 'Belum bayar';
-					break;
-				case 'sudah':
-					$status = 'Sudah bayar';
-					break;
-				default:
-				$status = 'Dibatalkan';
-			}
-			array_push($data, array(
-				'id' => $row['id'],
-				'waktu_pilih_tanggal' => $waktu_pilih_tanggal,
-				'waktu_pilih_jam' => $waktu_pilih_jam,
-				'metode_bayar' => $row['metode_bayar'],
-				'status' => $status,
-				'nama_lapangan' => $row['nama'],
-				'harga' => $row['harga'],
-				'alamat' => $row['alamat'],
-				'bank' => $row['bank'],
-				'nama_rekening' => $row['nama_rekening'],
-				'no_rekening' => $row['no_rekening'],
-				'telp' => $row['telp'],
-				'latitude' => $row['latitude'],
-				'longitude' => $row['longitude']
-			));
-		}
-		$response = array(
-			'status' => TRUE,
-			'msg' => '',
-			'data' => $data
-		);
-	} else {
-		$response = array(
-			'status' => FALSE,
-			'msg' => 'Tidak ada data!'
-		);
-	}
-	$conn->close();
+	echo json_encode($response);
 }
 
 function batal() {
 	global $conn;
-	global $response;
-
 	$id = $_GET['id'];
 	$query = "UPDATE pesanan 
 				SET 
@@ -250,4 +235,42 @@ function batal() {
 		);
 	}
 	$conn->close();
+	echo json_encode($response);
+}
+
+function store() {
+	global $conn;
+	$json = json_decode(file_get_contents("php://input"));
+	$id_user = $json->id_user;
+	$id_lapangan = $json->id_lapangan;
+	$waktu_pilih_tanggal = $json->waktu_pilih_tanggal;
+	$waktu_pilih_jam = $json->waktu_pilih_jam;
+	$metode_bayar = $json->metode_bayar;
+
+	$waktu_pilih = array();
+	$query = "";
+
+	for($i = 0; $i < count($waktu_pilih_jam); $i++) {
+		$waktu_pilih[] = $waktu_pilih_tanggal . " " . $waktu_pilih_jam[$i];
+
+		$query .= "INSERT INTO pesanan 
+					(id_user, id_lapangan, waktu_pilih, metode_bayar, status) 
+				VALUES 
+					('$id_user', '$id_lapangan', '$waktu_pilih[$i]', '$metode_bayar', 'belum');";
+	}
+	
+	$result = $conn->multi_query($query);
+	if($result) {
+		$response = array(
+			'status' => TRUE,
+			'msg' => 'Pemesanan berhasil!'
+		);
+	} else {
+		$response = array(
+			'status' => FALSE,
+			'msg' => 'Pemesanan gagal!'
+		);
+	}
+	$conn->close();
+	echo json_encode($response);
 }
