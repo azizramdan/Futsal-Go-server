@@ -5,7 +5,7 @@ $query = "UPDATE pesanan
 				SET 
 					status = 'kadaluarsa'
 				WHERE 
-                    status = 'belum' AND waktu_pilih < NOW()";
+                    status = 'belum' AND created_at + INTERVAL 2 HOUR < NOW()";
 $result = $conn->query($query);
 if($result) {
     $response = array(
