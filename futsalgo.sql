@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2019 at 02:38 PM
+-- Generation Time: Aug 12, 2019 at 09:33 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -48,8 +48,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `telp`, `email`, `password`, `alamat`, `latitude`, `longitude`, `bank`, `nama_rekening`, `no_rekening`, `jam_buka`, `jam_tutup`) VALUES
-(1, '081321655', 'fauzan@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'ger ertg erg er654g er gre g885', '-6.524842', '107.448613', 'BNI', 'Fauzan', '7898756654', '07:00:00', '22:00:00'),
-(2, '082232654641', 'aziz@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'fgt re thre6546 the ht', '-6.483249', '107.479635', 'BCA', 'Aziz', '798654654', '09:00:00', '21:00:00');
+(1, '081321655', 'fauzan@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'ger ertg erg er654g er gre g885', '-6.524842', '107.448613', 'Bank Negara Indonesia (BNI)', 'Fauzan', '7898756654', '07:00:00', '22:00:00'),
+(2, '081320666', 'aziz@gmail.com', '$2y$10$9jL.bAE1BLfI/tOxIqT9.e87miv6wvgw0ZSotJgc9Qf6bQgRP9FZS', 'fgt re thre6546 the ht', '-6.483249', '107.479635', 'Bank Rakyat Indonesia (BRI)', 'Aziz Rekening', '63320888', '02:00:00', '23:00:00');
 
 -- --------------------------------------------------------
 
@@ -107,17 +107,22 @@ CREATE TABLE `lapangan` (
   `id_admin` int(4) NOT NULL,
   `nama` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `harga` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `foto` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `foto` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `lapangan`
 --
 
-INSERT INTO `lapangan` (`id`, `id_admin`, `nama`, `harga`, `foto`) VALUES
-(6, 1, 'Puzzle 1', '100000', 'https://rumus.web.id/wp-content/uploads/2018/08/lapangan-futsal.jpg'),
-(7, 1, 'Puzzle 2', '75000', 'https://s.kaskus.id/r480x480/images/fjb/2016/02/29/take_over_lapangan_futsal_batam_684052_1456738328.jpg'),
-(8, 2, 'YPKP', '200000', 'https://www.jaringfutsalpengaman.com/wp-content/uploads/2018/07/37.jpg');
+INSERT INTO `lapangan` (`id`, `id_admin`, `nama`, `harga`, `foto`, `deleted_at`) VALUES
+(6, 1, 'Puzzle 1', '100000', 'https://rumus.web.id/wp-content/uploads/2018/08/lapangan-futsal.jpg', NULL),
+(7, 1, 'Puzzle 2', '75000', 'https://s.kaskus.id/r480x480/images/fjb/2016/02/29/take_over_lapangan_futsal_batam_684052_1456738328.jpg', NULL),
+(8, 2, 'YPKP 22', '150000', 'https://www.jaringfutsalpengaman.com/wp-content/uploads/2018/07/37.jpg', NULL),
+(9, 1, 'aaaa', '3344', 'asdfasd', NULL),
+(10, 2, 'Lap 1', '50000', 'https://img.ikincielim.com/iel_Resim/Ortalar/1095924.jpg', NULL),
+(11, 2, 'Lap 2', '39000', 'https://img.ikincielim.com/iel_Resim/Ortalar/1095924.jpg', '2019-08-10 11:39:22'),
+(12, 2, 'Lap 33', '200000', 'https://img.ikincielim.com/iel_Resim/Ortalar/1095924.jpg', '2019-08-10 11:34:59');
 
 -- --------------------------------------------------------
 
@@ -131,7 +136,7 @@ CREATE TABLE `pesanan` (
   `id_lapangan` int(4) NOT NULL,
   `waktu_pilih` datetime NOT NULL,
   `metode_bayar` enum('cod','transfer') COLLATE utf8_unicode_ci NOT NULL,
-  `status` enum('belum','sudah','batal') COLLATE utf8_unicode_ci NOT NULL
+  `status` enum('belum','sudah','batal','kadaluarsa') COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -139,8 +144,10 @@ CREATE TABLE `pesanan` (
 --
 
 INSERT INTO `pesanan` (`id`, `id_user`, `id_lapangan`, `waktu_pilih`, `metode_bayar`, `status`) VALUES
-(25, 7, 6, '2019-08-07 19:00:00', 'cod', 'belum'),
-(26, 8, 8, '2019-08-07 20:00:00', 'transfer', 'sudah');
+(25, 7, 6, '2019-08-07 19:00:00', 'cod', 'kadaluarsa'),
+(26, 8, 8, '2019-08-08 20:00:00', 'transfer', 'sudah'),
+(27, 2, 8, '2019-08-10 17:00:00', 'transfer', 'batal'),
+(28, 2, 8, '2019-08-10 18:00:00', 'transfer', 'kadaluarsa');
 
 -- --------------------------------------------------------
 
@@ -240,13 +247,13 @@ ALTER TABLE `fasilitas_lapangan`
 -- AUTO_INCREMENT for table `lapangan`
 --
 ALTER TABLE `lapangan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `user`
