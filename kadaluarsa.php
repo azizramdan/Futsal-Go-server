@@ -18,5 +18,5 @@ if($result) {
         'msg' => 'Update gagal!'
     );
 }
-$conn->close();
-echo json_encode($response);
+// $conn->close();
+// echo json_encode($response);
