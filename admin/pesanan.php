@@ -22,7 +22,7 @@ function get() {
                 index();
                 break;
 
-            case 'index':
+            case 'statistik':
                 statistik();
                 break;
 
@@ -140,6 +140,43 @@ function konfirmasi() {
 }
 
 function statistik() {
+    global $conn;
+    $id = $_GET['id'];
+    $bulan = $_GET['bulan'];
+    $tahun = $_GET['tahun'];
+    $data = array();
+    $query = "SELECT COUNT(status) FROM pesanan WHERE id_lapangan = '$id' AND MONTH(created_at) = $bulan AND YEAR(created_at) = $tahun AND status = 'sudah'";
+    $result = $conn->query($query);
+    if ($result->num_rows === 1) {
+        $result = $result->fetch_array();
+        $data += ['selesai' => $result[0]];
+    } else {
+        $data += ['selesai' => '0'];
+    }
     
+    $query = "SELECT COUNT(status) FROM pesanan WHERE id_lapangan = '$id' AND MONTH(created_at) = $bulan AND YEAR(created_at) = $tahun AND status = 'batal'";
+    $result = $conn->query($query);
+    if ($result->num_rows === 1) {
+        $result = $result->fetch_array();
+        $data += ['batal' => $result[0]];
+    } else {
+        $data += ['batal' => '0'];
+    }
+
+    $query = "SELECT COUNT(status) FROM pesanan WHERE id_lapangan = '$id' AND MONTH(created_at) = $bulan AND YEAR(created_at) = $tahun AND status = 'kadaluarsa'";
+    $result = $conn->query($query);
+    if ($result->num_rows === 1) {
+        $result = $result->fetch_array();
+        $data += ['kadaluarsa' => $result[0]];
+    } else {
+        $data += ['kadaluarsa' => '0'];
+    }
+    $response = array(
+        'status' => TRUE,
+        'msg' => '',
+        'data' => $data
+    );
+    $conn->close();
+    echo json_encode($response);
 }
 
