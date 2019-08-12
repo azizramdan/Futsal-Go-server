@@ -21,7 +21,11 @@ function get() {
             case 'index':
                 index();
                 break;
-            
+
+            case 'index':
+                statistik();
+                break;
+
             default:
                 # code...
                 break;
@@ -133,5 +137,9 @@ function konfirmasi() {
 	}
     $conn->close();
     echo json_encode($response);
+}
+
+function statistik() {
+    
 }
 
