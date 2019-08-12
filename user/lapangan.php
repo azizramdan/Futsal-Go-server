@@ -1,31 +1,48 @@
 <?php
-$response = "";
-if($_SERVER['REQUEST_METHOD']=='GET') {
-    include_once "..\configuration.php";
+include_once "..\configuration.php";
+
+switch ($_SERVER['REQUEST_METHOD']) {
+    case 'GET':
+        get();
+        break;
+
+    case 'POST':
+        post();
+        break;
     
-    index();
-
-    echo json_encode($response);
-} else {
-    if(isset($_POST['method'])) {
-        include_once "configuration.php";
-        $method = $_POST['method'];
-
-        if($method == 'login') {
-            login();
-        } else if($method == 'registrasi') {
-            registrasi();
-        } else if($method == 'update') {
-            update();
+    default:
+        # code...
+        break;
+}
+function get() {
+    if(isset($_GET['method'])) {
+        switch ($_GET['method']) {
+			case 'index':
+				index();
+                break;
+            
+            default:
+                # code...
+                break;
         }
-        echo json_encode($response);
+    }
+}
+function post() {
+    if(isset($_POST['method'])) {
+        switch ($_POST['method']) {
+            case 'index':
+				break;
+            
+            default:
+                # code...
+                break;
+        }
     }
 }
 
 function index() {
-    global $conn;
-    global $response;
-    $sort = $_GET['sort'];
+	global $conn;
+	$sort = $_GET['sort'];
 
     if($sort == 'terlaris') {
         $query = "SELECT
@@ -103,4 +120,5 @@ function index() {
         );
     }
 	$conn->close();
+	echo json_encode($response);
 }
