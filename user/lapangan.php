@@ -58,7 +58,8 @@ function index() {
                     FROM
                         lapangan, admin
                     WHERE 
-                        lapangan.id_admin = admin.id
+                        deleted_at IS NULL
+                        AND lapangan.id_admin = admin.id
                     ORDER BY terlaris DESC";
 
     } else if($sort == 'termurah') {
@@ -73,7 +74,7 @@ function index() {
                     admin.no_rekening
                 FROM
                     lapangan, admin
-                WHERE lapangan.id_admin = admin.id
+                WHERE deleted_at IS NULL AND lapangan.id_admin = admin.id
                 ORDER BY CONVERT(lapangan.harga, decimal) ASC";
 
     } else {
@@ -86,27 +87,26 @@ function index() {
                     admin.bank, 
                     admin.nama_rekening, 
                     admin.no_rekening 
-                FROM lapangan 
-                INNER JOIN admin 
-                ON lapangan.id_admin = admin.id";
+                FROM lapangan, admin
+                WHERE deleted_at IS NULL AND lapangan.id_admin = admin.id";
     }
     
     $result = $conn->query($query);
     $data = array();
     if($result->num_rows > 0) {
-        while($row = mysqli_fetch_array($result)){
+        while($row = mysqli_fetch_assoc($result)){
             array_push($data, array(
-                'id' => $row[0], 
-                'nama' => $row[2], 
-                'harga' => $row[3], 
-                'foto' => $row[4],
-                'telp'=>$row[5],
-                'alamat'=>$row[6],
-                'latitude'=>$row[7],
-                'longitude'=>$row[8],
-                'bank'=>$row[9],
-                'nama_rekening'=>$row[10],
-                'no_rekening'=>$row[11]));
+                'id' => $row['id'], 
+                'nama' => $row['nama'], 
+                'harga' => $row['harga'], 
+                'foto' => $row['foto'],
+                'telp'=>$row['telp'],
+                'alamat'=>$row['alamat'],
+                'latitude'=>$row['latitude'],
+                'longitude'=>$row['longitude'],
+                'bank'=>$row['bank'],
+                'nama_rekening'=>$row['nama_rekening'],
+                'no_rekening'=>$row['no_rekening']));
         }
         $response = array(
             'status' => TRUE,
