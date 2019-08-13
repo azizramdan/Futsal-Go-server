@@ -21,6 +21,10 @@ function get() {
 				index();
                 break;
             
+            case 'fasilitas':
+				fasilitas();
+                break;
+
             default:
                 # code...
                 break;
@@ -94,7 +98,7 @@ function index() {
     $result = $conn->query($query);
     $data = array();
     if($result->num_rows > 0) {
-        while($row = mysqli_fetch_assoc($result)){
+        while($row = mysqli_fetch_assoc($result)) {
             array_push($data, array(
                 'id' => $row['id'], 
                 'nama' => $row['nama'], 
@@ -120,5 +124,37 @@ function index() {
         );
     }
 	$conn->close();
+	echo json_encode($response);
+}
+
+function fasilitas() {
+    global $conn;
+    $id = $_GET['id'];
+    $query = "SELECT 
+                    fasilitas_lapangan.id,
+                    fasilitas.nama
+                FROM fasilitas_lapangan, fasilitas 
+                WHERE fasilitas_lapangan.id_fasilitas = fasilitas.id
+                    AND fasilitas_lapangan.id_lapangan = '$id'";
+    $result = $conn->query($query);
+    $data = array();
+    if($result->num_rows > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+            array_push($data, array(
+                'id' => $row['id'], 
+                'nama' => $row['nama']));
+        }
+        $response = array(
+            'status' => TRUE,
+            'msg' => '',
+            'data' => $data
+        );
+    } else {
+        $response = array(
+            'status' => FALSE,
+            'msg' => 'Tidak ada data!'
+        );
+    }
+    $conn->close();
 	echo json_encode($response);
 }
