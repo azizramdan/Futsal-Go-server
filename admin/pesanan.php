@@ -1,5 +1,5 @@
 <?php
-include_once "..\configuration.php";
+include_once "../configuration.php";
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
@@ -140,6 +140,8 @@ function konfirmasi() {
 }
 
 function statistik() {
+    include_once "../kadaluarsa.php";
+
     global $conn;
     $id = $_GET['id'];
     $bulan = $_GET['bulan'];

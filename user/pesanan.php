@@ -1,5 +1,5 @@
 <?php
-include_once "..\configuration.php";
+include_once "../configuration.php";
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
@@ -51,7 +51,7 @@ function post() {
 }
 
 function index() {
-    include_once "..\kadaluarsa.php";
+    include_once "../kadaluarsa.php";
 
     global $conn;
     $id_user = $_GET['id_user'];

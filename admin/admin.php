@@ -1,5 +1,5 @@
 <?php
-include_once "..\configuration.php";
+include_once "../configuration.php";
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
