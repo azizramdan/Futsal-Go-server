@@ -48,8 +48,16 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `telp`, `email`, `password`, `alamat`, `latitude`, `longitude`, `bank`, `nama_rekening`, `no_rekening`, `jam_buka`, `jam_tutup`) VALUES
-(1, '081321655', 'fauzan@gmail.com', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi', 'ger ertg erg er654g er gre g885', '-6.524842', '107.448613', 'Bank Negara Indonesia (BNI)', 'Fauzan', '7898756654', '07:00:00', '22:00:00'),
-(2, '081320666', 'aziz@gmail.com', '$2y$10$9jL.bAE1BLfI/tOxIqT9.e87miv6wvgw0ZSotJgc9Qf6bQgRP9FZS', 'fgt re thre6546 the ht', '-6.483249', '107.479635', 'Bank Rakyat Indonesia (BRI)', 'Aziz Rekening', '63320888', '02:00:00', '23:00:00');
+(3, '081910088345', 'Bawet@gmail.com', '$2y$10$zeqOlYs7HxnM.nXcUwDrYeCh4ns7Ctl.QLD3E2OBoyb9LHv2Ku6tW', 'Tamansari, Kec. Bandung Wetan, Kota Bandung, Jawa Barat 40116', '-6.889080', '107.607225', 'Bank Negara Indonesia (BNI)', 'Bawet Futsal', '0346244387', '08:00:00', '22:00:00'),
+(4, '081321869910', 'YPKPFutsal@gmail.com', '$2y$10$vXtZUIKBSR3NQtEWqWGI3eUfIMNRwGQarXi5MqYn8x/Jxm2nW1HzO', 'Jl. Penghulu Haji Jl. PH.H. Mustofa No.70, Cikutra, Kec. Cibeunying Kidul, Kota Bandung, Jawa Barat 40124', '-6.899740', '107.640873', 'Bank Rakyat Indonesia (BRI)', 'YPKP Futsal', '678523439876', '08:00:00', '23:00:00'),
+(5, '(022)2020980', 'sampoernafutsal@gmail.com', '$2y$10$R4TB9tNdwPrA1UyFIK3I2ugLfrTtQd7v3eC3LucL/PMNKnCga20.a', 'Jl. Padasaluyu No.10, Isola, Kec. Sukasari, Kota Bandung, Jawa Barat 40154', '-6.850381', '107.594880', 'Bank Central Asia (BCA)', 'Sampoerna Futsal', '12389766578', '07:00:00', '23:00:00'),
+(13, '089653911382', 'puzzle@gmail.com', '$2y$10$0y/mBmRR9q4x9gLCCg0sd.cOmeoKI9TF6.EP6/KPWazpOV7PX811e', 'Jl. Sadang Serang No.5, Sadang Serang, Kecamatan Coblong, Bandung, Jawa Barat 40134', '-6.891539', '107.626789', 'Bank Central Asia (BCA)', 'Puzzle Futsal', '876754347665', '07:00:00', '22:00:00'),
+(14, '085101624989', 'dewafutsal@gmail.com', '$2y$10$jLJTnaLZL4DzoLgaaUHJauNiLCmiVMKevtMD9.aUZJ9Zjz/YZnahO', 'Jl. Parakan Saat No.224, Antapani Tengah, Kec. Antapani, Kota Bandung, Jawa Barat 40291', '-6.927169', '107.666522', 'Bank Mandiri', 'Dewa Futsal', '09876547865', '07:00:00', '23:00:00'),
+(17, '(022)7801616', 'progresiffutsal@gmail.com', '$2y$10$choTF8KyhkUAHCtnuubHfeKAYWKeEbxh5F5YkWsmEsqIB6RBVu9R.', 'Jl. Soekarno Hatta No.785A, Babakan Penghulu, Cinambo, Kota Bandung, Jawa Barat 40293', '-6.937376', '107.685755', 'Bank Central Asia (BCA)', 'Progresif Futsal', '766567665431', '08:00:00', '23:00:00'),
+(18, '(022)20521343', 'queenfutsal@gmail.com', '$2y$10$QF.wjyBWLS87lGxr0Fy14ef98HP8tiI9MznkXEeSkNbbDyWMeUHZq', 'Jl.Brigjen Katamso No.66, Cicadas, Cibeunying Kidul, Cicadas, Kec. Cibeunying Kidul, Kota Bandung, Jawa Barat 40122', '-6.902799', '107.633451', 'Bank Negara Indonesia (BNI)', 'Queen Futsal', '667598784321', '07:00:00', '23:00:00'),
+(19, '(022)92630499', 'meteorfutsal@gmail.com', '$2y$10$K8qChixbhKoelTO/gWTRo.Al.QAI0.5B4VaDQzDLo/vNsjubLXhvi', 'Jl. Terusan Jakarta, Antapani Kulon, Kec. Antapani, Kota Bandung, Jawa Barat 40291', '-6.912271', '107.656883', 'Bank Central Asia (BCA)', 'Meteor Futsal', '46587673214', '06:00:00', '22:00:00'),
+(20, '085100015535', 'futsal35@email.com', '$2y$10$c7wmHnl55fRUWQd3D4vj2udFL0gsRWEEVLKd6gDv16G8Uw5O9h0GC', 'Jl. International School No. 8 A, Cicaheum, Kec. Kiaracondong, Kota Bandung, Jawa Barat 40282', '-6.910429', '107.649111', 'Bank Negara Indonesia (BNI)', 'Futsal 35', '7767544365', '07:00:00', '22:00:00'),
+(21, '(022) 2030915', 'obcfutsal@email.com', '$2y$10$7ZmIhaKykBR8iE85nxy.oeGtXtiL66yaVlNeLYGGvReo6ZmjRphqm', 'Jl. Rancabentang I No.3A, Ciumbuleuit, Kec. Cidadap, Kota Bandung, Jawa Barat 40141', '-6.874744', '107.607233', 'Bank Central Asia (BCA)', 'OBC Futsal', '335477869841', '07:00:00', '23:00:00');
 
 -- --------------------------------------------------------
 
@@ -67,10 +75,15 @@ CREATE TABLE `fasilitas` (
 --
 
 INSERT INTO `fasilitas` (`id`, `nama`) VALUES
-(1, 'toilet'),
-(2, 'kafe'),
-(3, 'kamar ganti'),
-(4, 'tribun');
+(1, 'Toilet'),
+(4, 'Tribun'),
+(5, 'ATM'),
+(6, 'Kantin'),
+(7, 'Free WiFi'),
+(8, 'Taman Bermain'),
+(9, 'Toko'),
+(10, 'Minimarket'),
+(11, 'Musholla');
 
 -- --------------------------------------------------------
 
@@ -89,12 +102,52 @@ CREATE TABLE `fasilitas_lapangan` (
 --
 
 INSERT INTO `fasilitas_lapangan` (`id`, `id_fasilitas`, `id_lapangan`) VALUES
-(1, 2, 6),
-(2, 3, 6),
-(3, 4, 7),
-(4, 1, 8),
-(5, 2, 8),
-(6, 3, 8);
+(7, 1, 13),
+(8, 9, 13),
+(9, 1, 16),
+(10, 11, 16),
+(11, 9, 16),
+(12, 1, 14),
+(13, 6, 14),
+(14, 11, 14),
+(15, 10, 14),
+(16, 5, 14),
+(17, 7, 14),
+(18, 1, 15),
+(19, 6, 15),
+(20, 8, 15),
+(21, 11, 15),
+(22, 7, 15),
+(23, 1, 17),
+(24, 6, 17),
+(25, 11, 17),
+(26, 7, 17),
+(27, 4, 17),
+(28, 1, 18),
+(29, 6, 18),
+(30, 7, 18),
+(31, 4, 18),
+(32, 9, 19),
+(33, 6, 19),
+(34, 1, 19),
+(35, 11, 19),
+(36, 4, 19),
+(37, 7, 19),
+(38, 1, 20),
+(39, 11, 20),
+(40, 9, 20),
+(41, 4, 20),
+(42, 1, 21),
+(43, 6, 21),
+(44, 11, 21),
+(45, 7, 21),
+(46, 4, 21),
+(47, 6, 22),
+(48, 11, 22),
+(49, 1, 22),
+(50, 8, 22),
+(51, 7, 22),
+(52, 4, 22);
 
 -- --------------------------------------------------------
 
@@ -116,13 +169,16 @@ CREATE TABLE `lapangan` (
 --
 
 INSERT INTO `lapangan` (`id`, `id_admin`, `nama`, `harga`, `foto`, `deleted_at`) VALUES
-(6, 1, 'Puzzle 1', '100000', 'https://rumus.web.id/wp-content/uploads/2018/08/lapangan-futsal.jpg', NULL),
-(7, 1, 'Puzzle 2', '75000', 'https://s.kaskus.id/r480x480/images/fjb/2016/02/29/take_over_lapangan_futsal_batam_684052_1456738328.jpg', NULL),
-(8, 2, 'YPKP 22', '150000', 'https://www.jaringfutsalpengaman.com/wp-content/uploads/2018/07/37.jpg', NULL),
-(9, 1, 'aaaa', '3344', 'asdfasd', NULL),
-(10, 2, 'Lap 1', '50000', 'https://img.ikincielim.com/iel_Resim/Ortalar/1095924.jpg', NULL),
-(11, 2, 'Lap 2', '39000', 'https://img.ikincielim.com/iel_Resim/Ortalar/1095924.jpg', '2019-08-10 11:39:22'),
-(12, 2, 'Lap 33', '200000', 'https://img.ikincielim.com/iel_Resim/Ortalar/1095924.jpg', '2019-08-10 11:34:59');
+(13, 3, 'Lapangan Futsal Bawet', '50000', 'https://lh5.googleusercontent.com/p/AF1QipPGJt59jwSYyMEL90rj7h3aYZJQH5u_TvlHLBDn=w426-h240-k-no', NULL),
+(14, 4, 'YPKP Futsal', '120000', 'https://lh5.googleusercontent.com/p/AF1QipPC1OpesBFDHVWLFavLJI6FgfVhv0E9IDh6U3sd=w408-h725-k-no', NULL),
+(15, 5, 'Sampoerna Sport Club', '130000', 'http://infolapangan.co.id/upload/owner/Sampoerna%20Futsal/sampoerna-futsal-05.JPG', NULL),
+(16, 13, 'Puzzle Futsal', '90000', 'https://lh4.googleusercontent.com/proxy/qbHSIbdVcDAul6TZ1a1_Lb8XGX8YbzaehpMFWbG0HLh3xvA1rUqb2MYXNPgvsUpWnyV_wGcuuP-fsxtICkYKItAOl7MlDXLXchPcv6KuoMmiyHOaSkUz4yiKPrqZUNrNarBXX1XHTLJxJjld5ACjhHbW7A=w408-h306-k-no', NULL),
+(17, 14, 'Dewa Futsal', '120000', 'https://lh5.googleusercontent.com/p/AF1QipOLGbXmBN2z-AALGeQt4SdrCF0uKUSinZeSAMtS=w426-h240-k-no', NULL),
+(18, 17, 'Progresif Futsal', '160000', 'https://lh5.googleusercontent.com/p/AF1QipMb4bDEncdBWvfMCvkYg3UgD6yv2_mJz6JWOVZh=w1133-h240-k-no', NULL),
+(19, 18, 'Queen Futsal', '180000', 'https://lh5.googleusercontent.com/p/AF1QipMxRUZRhCbg6QS84oU_OMPvj7kOM47Mzh4V4chB=w426-h240-k-no', NULL),
+(20, 19, 'Meteor Futsal', '130000', 'https://lh5.googleusercontent.com/p/AF1QipPtGFsfHYPKWHJUNJtcX0F7ROpVokd8gnJXp65Q=w408-h306-k-no', NULL),
+(21, 20, 'Futsal 35', '150000', 'https://lh5.googleusercontent.com/p/AF1QipMbcxnTYt5QfAPuwYStxERJnpyOAPfgue8MsZKZ=w408-h306-k-no', NULL),
+(22, 21, 'OBC Sport Center', '120000', 'https://lh5.googleusercontent.com/p/AF1QipMXUmmmyr7R2Ji9XhfBP9jg2ybxOHWUu0MplV5e=w408-h272-k-no', NULL);
 
 -- --------------------------------------------------------
 
@@ -136,18 +192,19 @@ CREATE TABLE `pesanan` (
   `id_lapangan` int(4) NOT NULL,
   `waktu_pilih` datetime NOT NULL,
   `metode_bayar` enum('cod','transfer') COLLATE utf8_unicode_ci NOT NULL,
-  `status` enum('belum','sudah','batal','kadaluarsa') COLLATE utf8_unicode_ci NOT NULL
+  `status` enum('belum','sudah','batal','kadaluarsa') COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `pesanan`
 --
 
-INSERT INTO `pesanan` (`id`, `id_user`, `id_lapangan`, `waktu_pilih`, `metode_bayar`, `status`) VALUES
-(25, 7, 6, '2019-08-07 19:00:00', 'cod', 'kadaluarsa'),
-(26, 8, 8, '2019-08-08 20:00:00', 'transfer', 'sudah'),
-(27, 2, 8, '2019-08-10 17:00:00', 'transfer', 'batal'),
-(28, 2, 8, '2019-08-10 18:00:00', 'transfer', 'kadaluarsa');
+INSERT INTO `pesanan` (`id`, `id_user`, `id_lapangan`, `waktu_pilih`, `metode_bayar`, `status`, `created_at`) VALUES
+(30, 11, 13, '2019-08-14 13:00:00', 'cod', 'sudah', '2019-08-13 07:59:32'),
+(31, 11, 13, '2019-08-13 14:00:00', 'cod', 'sudah', '2019-08-13 07:59:32'),
+(32, 11, 16, '2019-08-13 20:00:00', 'cod', 'belum', '2019-08-13 07:59:32'),
+(33, 12, 13, '2019-08-31 16:00:00', 'cod', 'belum', '2019-08-13 07:59:32');
 
 -- --------------------------------------------------------
 
@@ -168,12 +225,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `telp`, `password`) VALUES
-(1, 'fauzanw', 'fauzan@gmail.com', '1111111111111', '$2y$10$1VDV6zw7k1NXnOyd.7josO/PFe2Vh3AmQ4AApEr1iKiySH1w03C0e'),
-(2, 'aziz', 'aziz@gmail.com', '465654654', '$2y$10$D0p0E3LKK6qPdK2xPYs1VeFvA5vjT0ZY22wdXEhdW3NnRY/ODC4Fi'),
-(7, 'Aziz Ramdan Kurniawan jr', 'azizramdan44@gmail.com', '089601566951', '$2y$10$1eWIuX4eqY/AsNIzkAC1WOsRIFMe17XNbGjpteoKV3L6H12KipRmO'),
-(8, 'aziz', 'azizramdan@gmail.com', '964848', '$2y$10$Ye/lyp2ny/TVeSsqosPXqenJKfJnWalmIDjMAVWW34hrIlA2pYN1O'),
-(9, 'Aziz', 'azizr@gmail.com', '081', '$2y$10$hQk0zD3U6BbX/O63FGtiy.ogaxiwXRdbufkoBkZgBuNvf8/QOuZTa'),
-(10, 'Gshshs', 'ysyhs@sd.com', '9795', '$2y$10$K//jERmZmpRw9H09ChzYUeEixX2PCr4sTVHb0fzUPXxfnh1TNNHZC');
+(11, 'Fauzan Adzima', 'fauzanadzima944@gmail.com', '087823770952', '$2y$10$8hbrUrtRGnSUzW9g1MKGLOQWismOHkxvYN.pXu2HRYuPx6tTugGvy'),
+(12, 'Senny Febrianti', 'sennyfebrianti1997@gmail.com', '085724049254', '$2y$10$X5bE/bba/HTePQeAID1XOuHLLZsRRpwpi6T87PbeoieaOqRBKavgq');
 
 --
 -- Indexes for dumped tables
@@ -229,37 +282,37 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `fasilitas`
 --
 ALTER TABLE `fasilitas`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `fasilitas_lapangan`
 --
 ALTER TABLE `fasilitas_lapangan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `lapangan`
 --
 ALTER TABLE `lapangan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
